@@ -12,17 +12,19 @@ class ViewController: UIViewController {
     @IBOutlet private weak var salesTaxRateTextField: UITextField!
     @IBOutlet private weak var taxIncludedAmountLabel: UILabel!
 
+    static let salesTaxRateKey = "salesTaxRate"
+
     @IBAction private func pressCalculateButton(_ sender: Any) {
         let taxExcludedAmount = Float(taxExcludedAmountTextField.text!) ?? 0
-        UserDefaults.standard.set(salesTaxRateTextField.text!, forKey: "salesTaxRate")
         let salesTaxRate = Float(salesTaxRateTextField.text!) ?? 0
+        UserDefaults.standard.set(salesTaxRate, forKey: Self.salesTaxRateKey)
         let taxIncludedAmount = Int(taxExcludedAmount + taxExcludedAmount * salesTaxRate / 100)
         taxIncludedAmountLabel.text = String(taxIncludedAmount)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let salesTaxRateText = UserDefaults.standard.string(forKey: "salesTaxRate")
-        salesTaxRateTextField.text = salesTaxRateText
+        let salesTaxRateText = UserDefaults.standard.float(forKey: Self.salesTaxRateKey)
+        salesTaxRateTextField.text = String(salesTaxRateText)
     }
 }
